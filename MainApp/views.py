@@ -28,3 +28,13 @@ def snippet(request, id):
         return HttpResponseNotFound(f"Snippet, with id={id} not found :(")
     context = {'snippet': dist_snippet}
     return render(request, 'pages/snippet.html', context)
+
+
+def snippet_create(request):
+    if request.method == "POST":
+        name = request.POST['name']
+        lang = request.POST['lang']
+        code = request.POST['code']
+        snippet = Snippet(name=name, lang=lang, code=code)
+        snippet.save()
+        return redirect('snippet_list')
