@@ -3,6 +3,7 @@ from django.http import HttpResponseNotFound
 from django.shortcuts import render, redirect
 
 from .models import Snippet
+from .forms import SnippetForm
 
 
 def index_page(request):
@@ -11,8 +12,15 @@ def index_page(request):
 
 
 def add_snippet_page(request):
-    context = {'pagename': 'Добавление нового сниппета'}
-    return render(request, 'pages/add_snippet.html', context)
+    if request.method == "GET":
+        form = SnippetForm()
+        context = {'pagename': 'Добавление нового сниппета', 'form': form}
+        return render(request, 'pages/add_snippet.html', context)
+    if request.method == "POST":
+        form = SnippetForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('snippet_list')
 
 
 def snippets_page(request):
@@ -28,13 +36,3 @@ def snippet(request, id):
         return HttpResponseNotFound(f"Snippet, with id={id} not found :(")
     context = {'snippet': dist_snippet}
     return render(request, 'pages/snippet.html', context)
-
-
-def snippet_create(request):
-    if request.method == "POST":
-        name = request.POST['name']
-        lang = request.POST['lang']
-        code = request.POST['code']
-        snippet = Snippet(name=name, lang=lang, code=code)
-        snippet.save()
-        return redirect('snippet_list')
