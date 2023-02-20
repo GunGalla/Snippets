@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+<!-- Begin page content -->
+<fieldset disabled>
+   <div class="row disabled">
+       <div class="col col-8">
+           Название: {{ snippet.name }}
+       </div>
+       <div class="col col-4">
+           Дата создания: {{ snippet.creation_date }}
+       </div>
+   </div>
+   <hr>
+   <div class="row">
+       <div class="col">
+           <div class="p-2 h-100" style="border:1px solid #ced4da; border-radius:5px;">
+               <p>
+                   {{ snippet.code }}
+               </p>
+           </div>
+       </div>
+   </div>
+</fieldset>
+{% endblock %}

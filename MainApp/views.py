@@ -1,5 +1,8 @@
-from django.http import Http404
+from django.core.exceptions import ObjectDoesNotExist
+from django.http import HttpResponseNotFound
 from django.shortcuts import render, redirect
+
+from .models import Snippet
 
 
 def index_page(request):
@@ -13,5 +16,15 @@ def add_snippet_page(request):
 
 
 def snippets_page(request):
-    context = {'pagename': 'Просмотр сниппетов'}
+    snippets = Snippet.objects.all()
+    context = {'snippets': snippets}
     return render(request, 'pages/view_snippets.html', context)
+
+
+def snippet(request, id):
+    try:
+        dist_snippet = Snippet.objects.get(id=id)
+    except ObjectDoesNotExist:
+        return HttpResponseNotFound(f"Snippet, with id={id} not found :(")
+    context = {'snippet': dist_snippet}
+    return render(request, 'pages/snippet.html', context)
