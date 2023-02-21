@@ -34,6 +34,12 @@ def snippets_page(request):
     return render(request, 'pages/view_snippets.html', context)
 
 
+def my_snippets(request, username):
+    dist_snippets = Snippet.objects.filter(user__username=username)
+    context = {'dist_snippets': dist_snippets}
+    return render(request, 'pages/my_snippets.html', context)
+
+
 def snippet(request, id):
     try:
         dist_snippet = Snippet.objects.get(id=id)

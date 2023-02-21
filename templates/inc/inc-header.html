@@ -24,11 +24,13 @@
                             Посмотреть сниппеты
                         </a>
                     </li>
+                    {% if request.user.is_authenticated %}
                     <li class="form-inline">
-                        <a class="btn btn-outline-info" href="{% url 'snippet_list' %}">
+                        <a class="btn btn-outline-info" href="{% url 'my_snippets' user.username %}">
                             Мои сниппеты
                         </a>
                     </li>
+                    {% endif %}
                 </ul>
             </div>
             {% if request.user.is_authenticated %}
