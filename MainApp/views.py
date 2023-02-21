@@ -36,3 +36,9 @@ def snippet(request, id):
         return HttpResponseNotFound(f"Snippet, with id={id} not found :(")
     context = {'snippet': dist_snippet}
     return render(request, 'pages/snippet.html', context)
+
+
+def snippet_delete(request, id):
+    snippet = Snippet.objects.get(id=id)
+    snippet.delete()
+    return redirect('snippet_list')
