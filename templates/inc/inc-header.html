@@ -12,27 +12,37 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <ul class="navbar-nav mr-auto">
+                    {% if request.user.is_authenticated %}
                     <li class="form-inline">
                         <a class="btn btn-outline-secondary" href="{% url 'add_snippet' %}">
                             Добавить сниппет
                         </a>
                     </li>
+                    {% endif %}
                     <li class="form-inline">
                         <a class="btn btn-outline-info" href="{% url 'snippet_list' %}">
                             Посмотреть сниппеты
                         </a>
                     </li>
+                    <li class="form-inline">
+                        <a class="btn btn-outline-info" href="{% url 'snippet_list' %}">
+                            Мои сниппеты
+                        </a>
+                    </li>
                 </ul>
             </div>
             {% if request.user.is_authenticated %}
-                <span style="color: white">Welcome, {{request.user.username }}</span>
-                <a href="{% url 'logout' %}">Logout</a>
+            <span style="color: white">Welcome, {{request.user.username }}</span>
+            <a href="{% url 'logout' %}">Logout</a>
             {% else %}
-                <form method="post" action="{% url 'login' %}">{% csrf_token %}
-                    <input name="username" type="text" placeholder="username">
-                    <input name="password" type="password" placeholder="password">
-                    <button type="submit">login</button>
-                </form>
+            <form method="get" action="{% url 'register' %}">{% csrf_token %}
+                <button type="submit">Регистрация</button>
+            </form>
+            <form method="post" action="{% url 'login' %}">{% csrf_token %}
+                <input name="username" type="text" placeholder="username">
+                <input name="password" type="password" placeholder="password">
+                <button type="submit">login</button>
+            </form>
             {% endif %}
         </div>
     </nav>

@@ -2,9 +2,10 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseNotFound
 from django.shortcuts import render, redirect
 from django.contrib import auth
+from django.contrib.auth.decorators import login_required
 
 from .models import Snippet
-from .forms import SnippetForm
+from .forms import SnippetForm, UserRegistrationForm
 
 
 def index_page(request):
@@ -12,6 +13,7 @@ def index_page(request):
     return render(request, 'pages/index.html', context)
 
 
+@login_required()
 def add_snippet_page(request):
     if request.method == "GET":
         form = SnippetForm()
@@ -62,4 +64,16 @@ def login(request):
 
 def logout(request):
     auth.logout(request)
-    return redirect(request.META.get('HTTP_REFERER', '/'))
+    return redirect('home')
+
+
+def register(request):
+    if request.method == "GET":
+        form = UserRegistrationForm()
+        context = {'pagename': 'Регистрация нового пользователя', 'form': form}
+        return render(request, 'pages/register.html', context)
+    if request.method == "POST":
+        form = UserRegistrationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('home')

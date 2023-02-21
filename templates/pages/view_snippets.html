@@ -12,14 +12,6 @@
 
         <div class="row">
             <div class="col">
-                <p>На данной страницы будут отображаться все созданные сниппеты.</p>
-                <p>Пока тут просто пример, но скоро заменим реальными сниппетами из БД!</p>
-                <hr>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col">
                 <table class="table table-striped">
                     <thead class="thead-dark">
                     <tr>
@@ -40,13 +32,13 @@
                             </a>
                         </td>
                         <td>{{ snippet.creation_date }}</td>
-                        <td>{{ snippet.user.username }}</td>
+                        <td>{{ snippet.user }}</td>
                     </tr>
                     {% endfor %}
                     </tbody>
                 </table>
                 <div align="right">
-                    <i style="color: gray;">Всего сниппетов: 2</i>
+                    <i style="color: gray;">Всего сниппетов: {{ snippets.count }}</i>
                 </div>
             </div>
         </div>
