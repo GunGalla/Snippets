@@ -1,12 +1,12 @@
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import HttpResponseNotFound
+from django.http import HttpResponseNotFound, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
-from .models import Snippet
-from .forms import SnippetForm, UserRegistrationForm
+from .models import Snippet, Comment
+from .forms import SnippetForm, UserRegistrationForm, CommentForm
 
 
 def index_page(request):
@@ -35,23 +35,27 @@ def snippets_page(request):
     return render(request, 'pages/view_snippets.html', context)
 
 
+@login_required()
 def my_snippets(request, username):
     dist_snippets = Snippet.objects.filter(user__username=username)
     context = {'dist_snippets': dist_snippets}
     return render(request, 'pages/my_snippets.html', context)
 
 
-def snippet(request, id):
-    try:
-        dist_snippet = Snippet.objects.get(id=id)
-    except ObjectDoesNotExist:
-        return HttpResponseNotFound(f"Snippet, with id={id} not found :(")
-    context = {'snippet': dist_snippet}
+def snippet(request, snippet_id):
+    snippet = Snippet.objects.get(id=snippet_id)
+    comment_form = CommentForm()
+    context = {
+        'pagename': 'Просмотр сниппетов',
+        'snippet': snippet,
+        'comments': snippet.comments.all(),
+        'comment_form': comment_form
+    }
     return render(request, 'pages/snippet.html', context)
 
 
-def snippet_delete(request, id):
-    snippet = Snippet.objects.get(id=id)
+def snippet_delete(request, snippet_id):
+    snippet = Snippet.objects.get(id=snippet_id)
     snippet.delete()
     return redirect(request.META.get('HTTP_REFERER', '/'))
 
@@ -87,3 +91,16 @@ def register(request):
             return redirect('home')
         context['form'] = form
         return render(request, 'pages/register.html', context)
+
+
+def comment_add(request):
+    if request.method == "POST":
+        comment_form = CommentForm(request.POST)
+        if comment_form.is_valid():
+            snippet_id = request.POST["snippet_id"]
+            snippet = Snippet.objects.get(id=snippet_id)
+            comment = comment_form.save(commit=False)
+            comment.author = request.user
+            comment.snippet = snippet
+            comment.save()
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
