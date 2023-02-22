@@ -50,5 +50,5 @@ class UserRegistrationForm(ModelForm):
 class CommentForm(ModelForm):
    class Meta:
        model = Comment
-       fields = ["text"]
+       fields = ["text", 'image']
        labels = {'text': ''}

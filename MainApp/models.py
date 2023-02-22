@@ -9,6 +9,8 @@ LANGS = (
 )
 
 class Snippet(models.Model):
+    class Meta:
+        ordering = ['name']
     name = models.CharField(max_length=100, unique=True)
     lang = models.CharField(max_length=30, choices=LANGS)
     code = models.TextField(max_length=5000)
@@ -23,3 +25,4 @@ class Comment(models.Model):
    snippet = models.ForeignKey(to=Snippet,
                                on_delete=models.CASCADE,
                                related_name='comments')
+   image = models.ImageField(upload_to="images", blank=True, null=True)

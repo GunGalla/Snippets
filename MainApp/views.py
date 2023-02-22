@@ -95,7 +95,7 @@ def register(request):
 
 def comment_add(request):
     if request.method == "POST":
-        comment_form = CommentForm(request.POST)
+        comment_form = CommentForm(request.POST, request.FILES)
         if comment_form.is_valid():
             snippet_id = request.POST["snippet_id"]
             snippet = Snippet.objects.get(id=snippet_id)
