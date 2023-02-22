@@ -9,7 +9,7 @@ LANGS = (
 )
 
 class Snippet(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
     lang = models.CharField(max_length=30, choices=LANGS)
     code = models.TextField(max_length=5000)
     creation_date = models.DateTimeField(auto_now=True)

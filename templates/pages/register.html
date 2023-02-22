@@ -3,7 +3,7 @@
 <main role="main" class="mt-3 flex-shrink-0">
     <div class="container">
         <div class="row">
-            <div class="col">
+            <div class="col text-center">
                 <h1>{{ pagename }}</h1>
                 <hr>
             </div>
@@ -11,13 +11,12 @@
 
         <div class="row">
             <div class="col">
-                <form action="" method="post">{% csrf_token %}
+                <form action="{% url 'register' %}" method="POST">{% csrf_token %}
                     <table>
-                        {{ form.as_p }}
+                        {{ form }}
                     </table>
-                    <button type="submit">Создать</button>
+                    <button type="submit">Register</button>
                 </form>
-
             </div>
         </div>
     </div>

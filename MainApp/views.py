@@ -75,12 +75,15 @@ def logout(request):
 
 
 def register(request):
+    context = {'pagename': 'Регистрация нового пользователя'}
     if request.method == "GET":
         form = UserRegistrationForm()
-        context = {'pagename': 'Регистрация нового пользователя', 'form': form}
+        context['form'] = form
         return render(request, 'pages/register.html', context)
     if request.method == "POST":
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect('home')
+        context['form'] = form
+        return render(request, 'pages/register.html', context)

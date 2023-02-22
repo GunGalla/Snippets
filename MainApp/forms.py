@@ -23,6 +23,15 @@ class UserRegistrationForm(ModelForm):
     password1 = CharField(label="password", widget=PasswordInput)
     password2 = CharField(label="password confirm", widget=PasswordInput)
 
+    def clean_username(self):
+        username = self.cleaned_data.get("username")
+        if len(username) >=5 and username[0].isupper():
+            return username
+        else:
+            return ValidationError(
+                'Имя должно быть больше 5 символов и первй символ в верхнем регистре.'
+            )
+
     def clean_password2(self):
         pass1 = self.cleaned_data.get("password1")
         pass2 = self.cleaned_data.get("password2")
