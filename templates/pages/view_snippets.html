@@ -45,7 +45,21 @@
                                 <i class="fa-solid fa-caret-down"></i>
                             {% endif %}
                         </th>
-                        <th scope="col">Язык</th>
+                        <th scope="col">
+                            {% if sort == 'lang' %}
+                                <a href="?sort=-lang"> Язык </a>
+                            {% elif sort == '-lang' %}
+                                <a href="?sort=lang"> Язык </a>
+                            {% else %}
+                                <a href="?sort=lang"> Язык </a>
+                            {% endif %}
+
+                            {% if sort == 'lang' %}
+                                <i class="fa-solid fa-caret-up"></i>
+                            {% elif sort == '-lang' %}
+                                <i class="fa-solid fa-caret-down"></i>
+                            {% endif %}
+                        </th>
                         <th scope="col">Дата создания</th>
                         <th scope="col">Автор</th>
                     </tr>
